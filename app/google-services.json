@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "415069264259",
+    "firebase_url": "https://bloodport-9d605.firebaseio.com",
+    "project_id": "bloodport-9d605",
+    "storage_bucket": "bloodport-9d605.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:415069264259:android:3d9ac19af21e416f",
+        "android_client_info": {
+          "package_name": "com.bloodport"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "415069264259-s4qh74f9m5gqot2f9kl5jfbahlf9ajb5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bloodport",
+            "certificate_hash": "2063e5d80ebec42c67820e493274ede429133a76"
+          }
+        },
+        {
+          "client_id": "415069264259-p09g2v26u9rc80rutm1j9m0hrr3s9a12.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBi6GHeoWMJlVYbnW72Wsn_WLoF9L842sA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "415069264259-p09g2v26u9rc80rutm1j9m0hrr3s9a12.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
