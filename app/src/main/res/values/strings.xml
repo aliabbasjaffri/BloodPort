@@ -1,6 +1,18 @@
 <resources>
     <string name="app_name">BloodPort</string>
 
+    <!-- Blood Groups -->
+    <string-array name="bloodGroups">
+        <item>A+</item>
+        <item>A-</item>
+        <item>B+</item>
+        <item>B-</item>
+        <item>AB+</item>
+        <item>AB-</item>
+        <item>O+</item>
+        <item>O-</item>
+    </string-array>
+
     <!--Registration Fragment Layout Strings -->
     <string name="registration_fragment_name_hint">Your Complete Name</string>
     <string name="registration_fragment_phone_hint">Your Phone Number</string>
@@ -9,5 +21,19 @@
     <string name="registration_fragment_registration">Register</string>
     <string name="registration_fragment_male">Male</string>
     <string name="registration_fragment_female">Female</string>
+    <string name="registration_fragment_bloodgroup">BloodGroup</string>
+    <string name="registration_fragment_spinner_prompt">Please select your Blood Group</string>
     <string name="registration_fragment_mustusethese">http://www.androidhive.info/2015/09/android-material-design-floating-labels-for-edittext/</string>
+
+    <!--Confirmation Popup Layout Strings -->
+    <string name="confirm_popup_header">Please confirm your details</string>
+    <string name="confirm_popup_name_hint">Name: </string>
+    <string name="confirm_popup_name_hint_ph">Complete Name Placeholder</string>
+    <string name="confirm_popup_phone_hint">Phone: </string>
+    <string name="confirm_popup_phone_hint_ph">Phone Placeholder</string>
+    <string name="confirm_popup_gender_hint">Gender: </string>
+    <string name="confirm_popup_gender_hint_ph">Gender Placeholder</string>
+    <string name="confirm_popup_bloodgroup_hint">Blood Group: </string>
+    <string name="confirm_popup_bloodgroup_hint_ph">Blood Group Placeholder</string>
+
 </resources>

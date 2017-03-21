@@ -2,10 +2,12 @@ package com.bloodport.fragment;
 
 import com.bloodport.R;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.LayoutInflater;
@@ -15,6 +17,9 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by aliabbasjaffri on 18/03/2017.
@@ -26,16 +31,15 @@ public class RegistrationMainpageFragment extends Fragment
     EditText completeName;
     EditText phoneNumber;
     RadioGroup genderGroup;
-    RadioButton genderButton;
     CheckBox termsAndConditions;
     Button registerButton;
+    Spinner bloodGroupSpinner;
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
 
     public RegistrationMainpageFragment()
     {
-        prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        editor = prefs.edit();
+        //prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
     }
 
     public static RegistrationMainpageFragment newInstance() {
@@ -43,14 +47,17 @@ public class RegistrationMainpageFragment extends Fragment
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
         view = inflater.inflate(R.layout.fragment_registration, container, false);
+        //editor = prefs.edit();
 
         completeName = (EditText) view.findViewById(R.id.registrationFragmentCompleteNameEditText);
         phoneNumber = (EditText) view.findViewById(R.id.registrationFragmentPhoneNumberEditText);
         genderGroup = (RadioGroup) view.findViewById(R.id.registrationFragmentGenderRadioButton);
         termsAndConditions = (CheckBox) view.findViewById(R.id.termsAndConditionsCheckBox);
         registerButton = (Button) view.findViewById(R.id.registrationButton);
+        bloodGroupSpinner = (Spinner) view.findViewById(R.id.registrationFragmentBloodGroupSpinner);
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,17 +65,15 @@ public class RegistrationMainpageFragment extends Fragment
             {
                 if (validate())
                 {
-
-                    editor.putBoolean("skip_registration" , true).commit();
+                    reviewDetails();
+                    //editor.putBoolean("skip_registration" , true).apply();
                 }
                 else
                 {
-                    editor.putBoolean("skip_registration" , false).commit();
+                    //editor.putBoolean("skip_registration" , false).apply();
                 }
-
             }
         });
-
         return view;
     }
 
@@ -78,8 +83,41 @@ public class RegistrationMainpageFragment extends Fragment
         String phone = phoneNumber.getText().toString().trim();
         boolean terms = termsAndConditions.isEnabled();
         String gender = ((RadioButton) view.findViewById(genderGroup.getCheckedRadioButtonId())).getText().toString();
+        String bloodGroup = bloodGroupSpinner.getSelectedItem().toString();
+        return !(name.equals("") || phone.equals("") || gender.equals("") || bloodGroup.equals("") || terms == false);
+    }
 
-        return !(name.equals("") || phone.equals("") || gender.equals("") || terms == false);
+    private void reviewDetails()
+    {
+        LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+        View promptView = layoutInflater.inflate(R.layout.popup_confirm_details, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+        alertDialogBuilder.setView(promptView);
+
+        TextView name = (TextView) promptView.findViewById(R.id.confirmPopupNameTextView);
+        TextView mobileNumber = (TextView) promptView.findViewById(R.id.confirmPopupPhoneNumberTextView);
+        TextView gender = (TextView) promptView.findViewById(R.id.confirmPopupGenderTextView);
+        TextView bloodGroups = (TextView) promptView.findViewById(R.id.confirmPopupBloodGroupTextView);
+
+        name.setText(completeName.getText().toString().trim());
+        mobileNumber.setText(phoneNumber.getText().toString().trim());
+        gender.setText(((RadioButton) view.findViewById(genderGroup.getCheckedRadioButtonId())).getText().toString());
+        bloodGroups.setText(bloodGroupSpinner.getSelectedItem().toString());
+
+        alertDialogBuilder.setCancelable(false)
+                .setPositiveButton("Enter", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Toast.makeText(getActivity(), "You have successfully registered" , Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
     }
 
 }
