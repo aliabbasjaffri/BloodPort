@@ -33,6 +33,7 @@
         android:ems="10"
         android:hint="@string/registration_fragment_phone_hint"
         android:inputType="phone"
+        android:maxLength="14"
         android:padding="12dp"/>
 
     <RadioGroup

@@ -8,6 +8,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
+import android.telephony.PhoneNumberFormattingTextWatcher;
+import android.text.InputType;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.LayoutInflater;
@@ -20,6 +22,8 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Locale;
 
 /**
  * Created by aliabbasjaffri on 18/03/2017.
@@ -55,7 +59,11 @@ public class RegistrationMainpageFragment extends Fragment
         editor = prefs.edit();
 
         completeName = (EditText) view.findViewById(R.id.registrationFragmentCompleteNameEditText);
+
         phoneNumber = (EditText) view.findViewById(R.id.registrationFragmentPhoneNumberEditText);
+        phoneNumber.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
+        phoneNumber.setInputType(InputType.TYPE_CLASS_PHONE);
+
         genderGroup = (RadioGroup) view.findViewById(R.id.registrationFragmentGenderRadioButton);
         termsAndConditions = (CheckBox) view.findViewById(R.id.termsAndConditionsCheckBox);
         registerButton = (Button) view.findViewById(R.id.registrationButton);
@@ -85,7 +93,16 @@ public class RegistrationMainpageFragment extends Fragment
         boolean terms = termsAndConditions.isEnabled();
         String gender = ((RadioButton) view.findViewById(genderGroup.getCheckedRadioButtonId())).getText().toString();
         String bloodGroup = bloodGroupSpinner.getSelectedItem().toString();
-        return !(name.equals("") || phone.equals("") || gender.equals("") || bloodGroup.equals("") || terms == false);
+        phone = phone.replace("(" , "").replace(")","").replace("-","").replace(" ", "");
+
+        if (!phone.equals("") && phone.length() < 10)
+        {
+            Toast.makeText(getActivity(), "Please enter complete phone number" , Toast.LENGTH_SHORT).show();
+            phoneNumber.setText("");
+            return false;
+        }
+
+        return !(name.equals("") || gender.equals("") || bloodGroup.equals("") || terms == false);
     }
 
     private void reviewDetails()
