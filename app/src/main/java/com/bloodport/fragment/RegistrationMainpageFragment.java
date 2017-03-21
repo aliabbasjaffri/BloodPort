@@ -39,7 +39,7 @@ public class RegistrationMainpageFragment extends Fragment
 
     public RegistrationMainpageFragment()
     {
-        //prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
     }
 
     public static RegistrationMainpageFragment newInstance() {
@@ -50,7 +50,9 @@ public class RegistrationMainpageFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         view = inflater.inflate(R.layout.fragment_registration, container, false);
-        //editor = prefs.edit();
+
+        prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        editor = prefs.edit();
 
         completeName = (EditText) view.findViewById(R.id.registrationFragmentCompleteNameEditText);
         phoneNumber = (EditText) view.findViewById(R.id.registrationFragmentPhoneNumberEditText);
@@ -66,11 +68,10 @@ public class RegistrationMainpageFragment extends Fragment
                 if (validate())
                 {
                     reviewDetails();
-                    //editor.putBoolean("skip_registration" , true).apply();
                 }
                 else
                 {
-                    //editor.putBoolean("skip_registration" , false).apply();
+                    editor.putBoolean("skip_registration" , false).apply();
                 }
             }
         });
@@ -107,6 +108,7 @@ public class RegistrationMainpageFragment extends Fragment
         alertDialogBuilder.setCancelable(false)
                 .setPositiveButton("Enter", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        editor.putBoolean("skip_registration" , true).apply();
                         Toast.makeText(getActivity(), "You have successfully registered" , Toast.LENGTH_SHORT).show();
                     }
                 })
