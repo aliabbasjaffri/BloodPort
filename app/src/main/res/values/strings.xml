@@ -36,4 +36,13 @@
     <string name="confirm_popup_bloodgroup_hint">Blood Group: </string>
     <string name="confirm_popup_bloodgroup_hint_ph">Blood Group Placeholder</string>
 
+    <!--Dashboard Fragment Layout Strings -->
+    <string name="dashboard_fragment_title_header">Blood Donations Required</string>
+
+    <!--Dashboard Row Layout Strings -->
+    <string name="dashboard_row_name">Name</string>
+    <string name="dashboard_row_bloodGroup">Blood Group</string>
+    <string name="dashboard_row_timeStamp">Time Posted</string>
+    <string name="dashboard_row_location">Location</string>
+
 </resources>

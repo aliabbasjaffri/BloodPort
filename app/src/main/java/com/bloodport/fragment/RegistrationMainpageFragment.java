@@ -138,5 +138,4 @@ public class RegistrationMainpageFragment extends Fragment
         AlertDialog alert = alertDialogBuilder.create();
         alert.show();
     }
-
 }
