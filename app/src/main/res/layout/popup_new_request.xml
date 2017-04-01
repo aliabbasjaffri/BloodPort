@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp">
+
+    <TextView
+        android:text="@string/popup_request_title"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:padding="4dp"/>
+
+    <EditText
+        android:id="@+id/popupRequestNameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="@string/popup_request_name_hint"
+        android:layout_marginTop="4dp"/>
+
+    <EditText
+        android:id="@+id/popupRequestPhoneNumberEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:ems="10"
+        android:hint="@string/registration_fragment_phone_hint"
+        android:layout_marginTop="4dp"
+        android:inputType="phone"
+        android:maxLength="14"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:text="@string/registration_fragment_bloodgroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:textStyle="bold"/>
+
+        <android.support.v7.widget.AppCompatSpinner
+            android:id="@+id/popupRequestBloodGroupSpinner"
+            android:padding="8dp"
+            android:minWidth="20dp"
+            android:layout_width="wrap_content"
+            android:entries="@array/bloodGroups"
+            android:prompt="@string/registration_fragment_spinner_prompt"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/popupRequestAddressEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="@string/popup_request_address_hint"
+        android:inputType="textMultiLine"
+        android:layout_marginTop="4dp"/>
+</LinearLayout>

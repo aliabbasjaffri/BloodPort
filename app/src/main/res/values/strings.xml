@@ -45,4 +45,9 @@
     <string name="dashboard_row_timeStamp">Time Posted</string>
     <string name="dashboard_row_location">Location</string>
 
+    <!--Popup New Request Layout Strings -->
+    <string name="popup_request_title">New Blood Request</string>
+    <string name="popup_request_name_hint">Name</string>
+    <string name="popup_request_address_hint">Please enter your address</string>
+
 </resources>

@@ -8,10 +8,9 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.bloodport.R;
-import com.bloodport.model.BloodRequestList;
+import com.bloodport.model.BloodRequest;
 
 import java.util.List;
-import java.util.zip.Inflater;
 
 /**
  * Created by aliabbasjaffri on 26/03/2017.
@@ -20,9 +19,9 @@ import java.util.zip.Inflater;
 public class DashboardAdapter extends BaseAdapter
 {
     private Context context;
-    private List<BloodRequestList> listObjects;
+    private List<BloodRequest> listObjects;
 
-    public DashboardAdapter(Context context, List<BloodRequestList> obj)
+    public DashboardAdapter(Context context, List<BloodRequest> obj)
     {
         this.context = context;
         this.listObjects = obj;
@@ -46,8 +45,14 @@ public class DashboardAdapter extends BaseAdapter
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.row_dashboard_listview, null);
+        View view = convertView;
+
+        if(view == null)
+        {
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            view = inflater.inflate(R.layout.row_dashboard_listview, null);
+        }
+
         TextView nameHolder = (TextView) view.findViewById(R.id.dashboardRowNameTextView);
         TextView bloodGroupHolder = (TextView) view.findViewById(R.id.dashboardRowBloodGroupTextView);
         TextView timePosterHolder = (TextView) view.findViewById(R.id.dashboardRowTimestampTextView);

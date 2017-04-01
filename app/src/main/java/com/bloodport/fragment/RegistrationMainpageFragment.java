@@ -40,14 +40,16 @@ public class RegistrationMainpageFragment extends Fragment
     Spinner bloodGroupSpinner;
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
+    static RegistrationMainpageFragment instance;
 
     public RegistrationMainpageFragment()
     {
 
     }
 
-    public static RegistrationMainpageFragment newInstance() {
-        return new RegistrationMainpageFragment();
+    public static RegistrationMainpageFragment newInstance()
+    {
+        return instance == null ? instance = new RegistrationMainpageFragment() : instance;
     }
 
     @Override
@@ -126,7 +128,19 @@ public class RegistrationMainpageFragment extends Fragment
                 .setPositiveButton("Enter", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         editor.putBoolean("skip_registration" , true).apply();
+                        editor.putString("phoneNumber" , phoneNumber.getText().toString().trim()).apply();
+
                         Toast.makeText(getActivity(), "You have successfully registered" , Toast.LENGTH_SHORT).show();
+
+                        getActivity().getSupportFragmentManager().popBackStack();
+                        getActivity().getSupportFragmentManager()
+                                .beginTransaction()
+                                .add(R.id.mainFragmentFrame,
+                                        new DashBoardFragment(),
+                                        DashBoardFragment.class.getSimpleName())
+                                .commit();
+
+
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

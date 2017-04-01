@@ -6,16 +6,18 @@ package com.bloodport.model;
 
 public class UserRegistration
 {
-    String name;
-    String phoneNumber;
-    Boolean gender;
-    Boolean termsAgreement;
+    private String name;
+    private String phoneNumber;
+    private Boolean gender;
+    private Boolean termsAgreement;
+    private String bloodGroup;
 
-    public UserRegistration(String name, String phoneNumber, Boolean gender, Boolean termsAgreement) {
+    public UserRegistration(String name, String phoneNumber, Boolean gender, Boolean termsAgreement, String bloodGroup) {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.gender = gender;
         this.termsAgreement = termsAgreement;
+        this.bloodGroup = bloodGroup;
     }
 
     public String getName() {
@@ -48,5 +50,14 @@ public class UserRegistration
 
     public void setTermsAgreement(Boolean termsAgreement) {
         this.termsAgreement = termsAgreement;
+    }
+
+
+    public String getBloodGroup() {
+        return bloodGroup;
+    }
+
+    public void setBloodGroup(String bloodGroup) {
+        this.bloodGroup = bloodGroup;
     }
 }
