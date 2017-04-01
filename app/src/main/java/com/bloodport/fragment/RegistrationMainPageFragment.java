@@ -3,7 +3,6 @@ package com.bloodport.fragment;
 import com.bloodport.R;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -23,13 +22,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Locale;
-
 /**
  * Created by aliabbasjaffri on 18/03/2017.
  */
 
-public class RegistrationMainpageFragment extends Fragment
+public class RegistrationMainPageFragment extends Fragment
 {
     View view;
     EditText completeName;
@@ -40,16 +37,16 @@ public class RegistrationMainpageFragment extends Fragment
     Spinner bloodGroupSpinner;
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
-    static RegistrationMainpageFragment instance;
+    static RegistrationMainPageFragment instance;
 
-    public RegistrationMainpageFragment()
+    public RegistrationMainPageFragment()
     {
 
     }
 
-    public static RegistrationMainpageFragment newInstance()
+    public static RegistrationMainPageFragment newInstance()
     {
-        return instance == null ? instance = new RegistrationMainpageFragment() : instance;
+        return instance == null ? instance = new RegistrationMainPageFragment() : instance;
     }
 
     @Override
@@ -63,8 +60,6 @@ public class RegistrationMainpageFragment extends Fragment
         completeName = (EditText) view.findViewById(R.id.registrationFragmentCompleteNameEditText);
 
         phoneNumber = (EditText) view.findViewById(R.id.registrationFragmentPhoneNumberEditText);
-        phoneNumber.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
-        phoneNumber.setInputType(InputType.TYPE_CLASS_PHONE);
 
         genderGroup = (RadioGroup) view.findViewById(R.id.registrationFragmentGenderRadioButton);
         termsAndConditions = (CheckBox) view.findViewById(R.id.termsAndConditionsCheckBox);

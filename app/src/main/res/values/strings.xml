@@ -15,7 +15,7 @@
 
     <!--Registration Fragment Layout Strings -->
     <string name="registration_fragment_name_hint">Your Complete Name</string>
-    <string name="registration_fragment_phone_hint">(XXX) XXX-XXXX</string>
+    <string name="registration_fragment_phone_hint">03xxXXXXXXX</string>
     <string name="registration_fragment_terms_and_conditions">By clicking this checkbox, you agree to all the terms and conditions and  the consent to share your information </string>
     <string name="registration_fragment_register_button">Register</string>
     <string name="registration_fragment_registration">Register</string>

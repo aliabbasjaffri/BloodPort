@@ -43,7 +43,9 @@
 
         <TextView
             android:text="@string/registration_fragment_bloodgroup"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight=".6"
+            android:gravity="center"
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:textStyle="bold"/>
@@ -52,7 +54,9 @@
             android:id="@+id/popupRequestBloodGroupSpinner"
             android:padding="8dp"
             android:minWidth="20dp"
-            android:layout_width="wrap_content"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_weight=".4"
             android:entries="@array/bloodGroups"
             android:prompt="@string/registration_fragment_spinner_prompt"
             android:layout_height="wrap_content"/>

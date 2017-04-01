@@ -7,7 +7,7 @@ import android.os.Bundle;
 
 import com.bloodport.R;
 import com.bloodport.fragment.DashBoardFragment;
-import com.bloodport.fragment.RegistrationMainpageFragment;
+import com.bloodport.fragment.RegistrationMainPageFragment;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -26,9 +26,9 @@ public class MainActivity extends AppCompatActivity
             getSupportFragmentManager()
                     .beginTransaction()
                     .add(R.id.mainFragmentFrame,
-                            RegistrationMainpageFragment.newInstance(),
-                            RegistrationMainpageFragment.class.getSimpleName())
-                    .addToBackStack(RegistrationMainpageFragment.class.getSimpleName())
+                            RegistrationMainPageFragment.newInstance(),
+                            RegistrationMainPageFragment.class.getSimpleName())
+                    .addToBackStack(RegistrationMainPageFragment.class.getSimpleName())
                     .commit();
         }
         else

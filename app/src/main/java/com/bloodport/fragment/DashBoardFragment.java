@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Toast;
 import com.bloodport.R;
 import com.bloodport.adapter.DashboardAdapter;
 import com.bloodport.model.BloodRequest;
@@ -89,9 +88,7 @@ public class DashBoardFragment extends Fragment
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
         ListView listView = (ListView) view.findViewById(R.id.dashboardFragmentListView);
 
-        DatabaseReference ref = mDatabase.getReference().child("requests");
-
-        queryRef = ref.orderByChild("timeStamp");
+        queryRef = mDatabase.getReference().child("requests").orderByChild("timeStamp");
         queryRef.addChildEventListener(childEventListener);
 
         adapter = new DashboardAdapter(getActivity(), requests);
