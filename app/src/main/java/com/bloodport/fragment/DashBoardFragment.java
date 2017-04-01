@@ -38,6 +38,7 @@ public class DashBoardFragment extends Fragment
     SharedPreferences prefs;
     DashboardAdapter adapter;
     DatabaseReference ref;
+    Query queryRef;
     EditText name;
     EditText mobileNumber;
     Spinner bloodGroupSpinner;
@@ -90,10 +91,8 @@ public class DashBoardFragment extends Fragment
 
         DatabaseReference ref = mDatabase.getReference().child("requests");
 
-        Query queryRef = ref.orderByChild("timeStamp");
+        queryRef = ref.orderByChild("timeStamp");
         queryRef.addChildEventListener(childEventListener);
-
-        //ref.addChildEventListener(childEventListener);
 
         adapter = new DashboardAdapter(getActivity(), requests);
         listView.setAdapter(adapter);
@@ -158,8 +157,8 @@ public class DashBoardFragment extends Fragment
                         ref.push().setValue((new BloodRequest(request_user_name,
                                 bloodGroup,
                                 new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss", Locale.ENGLISH).format(new Date()),
-                                mobile,
-                                completeAddress)));
+                                completeAddress,
+                                mobile)));
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -175,6 +174,6 @@ public class DashBoardFragment extends Fragment
     @Override
     public void onStop() {
         super.onStop();
-        ref.removeEventListener(childEventListener);
+        queryRef.removeEventListener(childEventListener);
     }
 }
