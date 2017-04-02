@@ -1,14 +1,21 @@
 package com.bloodport.fragment;
 
 import com.bloodport.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.LayoutInflater;
@@ -31,17 +38,20 @@ public class RegistrationMainPageFragment extends Fragment
     View view;
     EditText completeName;
     EditText phoneNumber;
+    EditText emailAddress;
+    EditText password;
     RadioGroup genderGroup;
     CheckBox termsAndConditions;
     Button registerButton;
     Spinner bloodGroupSpinner;
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
+    private FirebaseAuth auth;
     static RegistrationMainPageFragment instance;
 
     public RegistrationMainPageFragment()
     {
-
+        auth = FirebaseAuth.getInstance();
     }
 
     public static RegistrationMainPageFragment newInstance()
@@ -57,10 +67,10 @@ public class RegistrationMainPageFragment extends Fragment
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         editor = prefs.edit();
 
+        emailAddress = (EditText) view.findViewById(R.id.registrationFragmentEmailAddressEditText);
+        password = (EditText) view.findViewById(R.id.registrationFragmentPasswordEditText);
         completeName = (EditText) view.findViewById(R.id.registrationFragmentCompleteNameEditText);
-
         phoneNumber = (EditText) view.findViewById(R.id.registrationFragmentPhoneNumberEditText);
-
         genderGroup = (RadioGroup) view.findViewById(R.id.registrationFragmentGenderRadioButton);
         termsAndConditions = (CheckBox) view.findViewById(R.id.termsAndConditionsCheckBox);
         registerButton = (Button) view.findViewById(R.id.registrationButton);
@@ -90,16 +100,47 @@ public class RegistrationMainPageFragment extends Fragment
         boolean terms = termsAndConditions.isEnabled();
         String gender = ((RadioButton) view.findViewById(genderGroup.getCheckedRadioButtonId())).getText().toString();
         String bloodGroup = bloodGroupSpinner.getSelectedItem().toString();
-        phone = phone.replace("(" , "").replace(")","").replace("-","").replace(" ", "");
+        String email = emailAddress.getText().toString().trim();
+        String passwordText = password.getText().toString().trim();
 
-        if (!phone.equals("") && phone.length() < 10)
-        {
-            Toast.makeText(getActivity(), "Please enter complete phone number" , Toast.LENGTH_SHORT).show();
-            phoneNumber.setText("");
+        //phone = phone.replace("(" , "").replace(")","").replace("-","").replace(" ", "");
+
+        if (TextUtils.isEmpty(email)) {
+            Toast.makeText(getActivity(), "Enter email address!", Toast.LENGTH_SHORT).show();
             return false;
         }
 
-        return !(name.equals("") || gender.equals("") || bloodGroup.equals("") || terms == false);
+        if (TextUtils.isEmpty(passwordText)) {
+            Toast.makeText(getActivity(), "Enter password!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (passwordText.length() < 6) {
+            Toast.makeText(getActivity(), "Password too short, enter minimum 6 characters!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (TextUtils.isEmpty(name)) {
+            Toast.makeText(getActivity(), "Enter complete name", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (TextUtils.isEmpty(phone) || phone.length() < 11) {
+            Toast.makeText(getActivity(), "Enter correct phone number!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (TextUtils.isEmpty(gender)) {
+            Toast.makeText(getActivity(), "Please enter gender!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (!terms) {
+            Toast.makeText(getActivity(), "Please enter gender!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        return true;
     }
 
     private void reviewDetails()
@@ -109,11 +150,13 @@ public class RegistrationMainPageFragment extends Fragment
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
         alertDialogBuilder.setView(promptView);
 
+        TextView email = (TextView) promptView.findViewById(R.id.confirmPopupEmailTextView);
         TextView name = (TextView) promptView.findViewById(R.id.confirmPopupNameTextView);
         TextView mobileNumber = (TextView) promptView.findViewById(R.id.confirmPopupPhoneNumberTextView);
         TextView gender = (TextView) promptView.findViewById(R.id.confirmPopupGenderTextView);
         TextView bloodGroups = (TextView) promptView.findViewById(R.id.confirmPopupBloodGroupTextView);
 
+        email.setText(emailAddress.getText().toString().trim());
         name.setText(completeName.getText().toString().trim());
         mobileNumber.setText(phoneNumber.getText().toString().trim());
         gender.setText(((RadioButton) view.findViewById(genderGroup.getCheckedRadioButtonId())).getText().toString());
@@ -122,6 +165,13 @@ public class RegistrationMainPageFragment extends Fragment
         alertDialogBuilder.setCancelable(false)
                 .setPositiveButton("Enter", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+
+                        ProgressDialog progressDialog = new ProgressDialog(getActivity());
+                        progressDialog.setMessage("Registering New User");
+                        progressDialog.show();
+
+                        registerUserOnFirebase(emailAddress.getText().toString().trim(), password.getText().toString().trim());
+
                         editor.putBoolean("skip_registration" , true).apply();
                         editor.putString("phoneNumber" , phoneNumber.getText().toString().trim()).apply();
 
@@ -131,11 +181,11 @@ public class RegistrationMainPageFragment extends Fragment
                         getActivity().getSupportFragmentManager()
                                 .beginTransaction()
                                 .add(R.id.mainFragmentFrame,
-                                        new DashBoardFragment(),
-                                        DashBoardFragment.class.getSimpleName())
+                                        new LoginFragment(),
+                                        LoginFragment.class.getSimpleName())
                                 .commit();
 
-
+                        progressDialog.hide();
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -146,5 +196,26 @@ public class RegistrationMainPageFragment extends Fragment
 
         AlertDialog alert = alertDialogBuilder.create();
         alert.show();
+    }
+
+    private void registerUserOnFirebase(String emailAddress, String password)
+    {
+        auth.createUserWithEmailAndPassword(emailAddress, password)
+                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>()
+                {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task)
+                    {
+                        Toast.makeText(getActivity(), "createUserWithEmail:onComplete:" + task.isSuccessful(), Toast.LENGTH_SHORT).show();
+
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+                            Toast.makeText(getActivity(), "Authentication failed." + task.getException(),
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 }

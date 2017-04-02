@@ -2,11 +2,13 @@ package com.bloodport.activity;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.bloodport.R;
 import com.bloodport.fragment.DashBoardFragment;
+import com.bloodport.fragment.LoginFragment;
 import com.bloodport.fragment.RegistrationMainPageFragment;
 
 public class MainActivity extends AppCompatActivity
@@ -26,9 +28,10 @@ public class MainActivity extends AppCompatActivity
             getSupportFragmentManager()
                     .beginTransaction()
                     .add(R.id.mainFragmentFrame,
-                            RegistrationMainPageFragment.newInstance(),
-                            RegistrationMainPageFragment.class.getSimpleName())
-                    .addToBackStack(RegistrationMainPageFragment.class.getSimpleName())
+                            new LoginFragment(),
+                            LoginFragment.class.getSimpleName())
+                    .addToBackStack(LoginFragment.class.getSimpleName())
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .commit();
         }
         else
@@ -39,7 +42,18 @@ public class MainActivity extends AppCompatActivity
                             DashBoardFragment.newInstance(),
                             DashBoardFragment.class.getSimpleName())
                     .addToBackStack(DashBoardFragment.class.getSimpleName())
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .commit();
+        }
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        if (getFragmentManager().getBackStackEntryCount() > 1) {
+            getFragmentManager().popBackStack();
+        } else {
+            super.onBackPressed();
         }
     }
 }

@@ -14,8 +14,10 @@
     </string-array>
 
     <!--Registration Fragment Layout Strings -->
+    <string name="registration_fragment_email_address_hint">Email Address</string>
+    <string name="registration_fragment_password_hint">Password</string>
     <string name="registration_fragment_name_hint">Your Complete Name</string>
-    <string name="registration_fragment_phone_hint">03xxXXXXXXX</string>
+    <string name="registration_fragment_phone_hint">Phone Number</string>
     <string name="registration_fragment_terms_and_conditions">By clicking this checkbox, you agree to all the terms and conditions and  the consent to share your information </string>
     <string name="registration_fragment_register_button">Register</string>
     <string name="registration_fragment_registration">Register</string>
@@ -27,6 +29,7 @@
 
     <!--Confirmation Popup Layout Strings -->
     <string name="confirm_popup_header">Please confirm your details</string>
+    <string name="confirm_popup_email_hint">Email: </string>
     <string name="confirm_popup_name_hint">Name: </string>
     <string name="confirm_popup_name_hint_ph">Complete Name Placeholder</string>
     <string name="confirm_popup_phone_hint">Phone: </string>
@@ -49,5 +52,14 @@
     <string name="popup_request_title">New Blood Request</string>
     <string name="popup_request_name_hint">Name</string>
     <string name="popup_request_address_hint">Please enter your address</string>
+
+    <!--Popup New Request Layout Strings -->
+    <string name="login_fragment_email_address_hint">Email Address</string>
+    <string name="login_fragment_password_hint">Password</string>
+    <string name="login_fragment_forget_password">Forget Password?</string>
+    <string name="login_fragment_registration_button">Register</string>
+    <string name="login_fragment_login_button">Login</string>
+    <string name="login_fragment_minimum_password_error">Password must be greater than 6 characters</string>
+    <string name="login_fragment_auth_failed_error">User does not exist</string>
 
 </resources>

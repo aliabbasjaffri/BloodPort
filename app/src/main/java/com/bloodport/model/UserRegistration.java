@@ -6,6 +6,7 @@ package com.bloodport.model;
 
 public class UserRegistration
 {
+    private String email;
     private String name;
     private String phoneNumber;
     private Boolean gender;
