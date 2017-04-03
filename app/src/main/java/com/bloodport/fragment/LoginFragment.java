@@ -1,5 +1,6 @@
 package com.bloodport.fragment;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -31,6 +32,7 @@ public class LoginFragment extends Fragment
     Button login;
     TextView forgetPassword;
     FirebaseAuth auth;
+    ProgressDialog progressDialog;
 
     public LoginFragment()
     {
@@ -47,6 +49,8 @@ public class LoginFragment extends Fragment
         registration = (Button) view.findViewById(R.id.loginFragmentRegisterButton);
         login = (Button) view.findViewById(R.id.loginFragmentLoginButton);
         forgetPassword = (TextView) view.findViewById(R.id.loginFragmentForgetPassword);
+
+        progressDialog = new ProgressDialog(getActivity());
 
         registration.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,6 +71,9 @@ public class LoginFragment extends Fragment
             @Override
             public void onClick(View v)
             {
+                progressDialog.setMessage("Loggin In..");
+                progressDialog.show();
+
                 String email = emailAddress.getText().toString();
                 final String passwordText = password.getText().toString();
 
@@ -84,32 +91,25 @@ public class LoginFragment extends Fragment
                 auth.signInWithEmailAndPassword(email, passwordText)
                         .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                             @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                // If sign in fails, display a message to the user. If sign in succeeds
-                                // the auth state listener will be notified and logic to handle the
-                                // signed in user can be handled in the listener.
-
+                            public void onComplete(@NonNull Task<AuthResult> task)
+                            {
                                 if (!task.isSuccessful())
                                 {
-                                    // there was an error
                                     if (passwordText.length() < 6)
-                                    {
                                         password.setError(getString(R.string.login_fragment_minimum_password_error));
-                                    }
                                     else
-                                    {
                                         Toast.makeText(getActivity(), getString(R.string.login_fragment_auth_failed_error), Toast.LENGTH_LONG).show();
-                                    }
                                 }
                                 else
                                 {
+                                    progressDialog.hide();
+
                                     getActivity().getSupportFragmentManager().popBackStack();
                                     getActivity().getSupportFragmentManager()
                                             .beginTransaction()
-                                            .add(R.id.mainFragmentFrame,
+                                            .replace(R.id.mainFragmentFrame,
                                                     DashBoardFragment.newInstance(),
                                                     DashBoardFragment.class.getSimpleName())
-                                            .addToBackStack(DashBoardFragment.class.getSimpleName())
                                             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                                             .commit();
                                 }

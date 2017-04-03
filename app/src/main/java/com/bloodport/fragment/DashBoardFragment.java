@@ -6,15 +6,19 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
+
 import com.bloodport.R;
 import com.bloodport.adapter.DashboardAdapter;
 import com.bloodport.model.BloodRequest;
@@ -94,6 +98,15 @@ public class DashBoardFragment extends Fragment
         adapter = new DashboardAdapter(getActivity(), requests);
         listView.setAdapter(adapter);
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        });
+
+
+
         return view;
     }
 
@@ -151,9 +164,24 @@ public class DashBoardFragment extends Fragment
                         String bloodGroup = bloodGroupSpinner.getSelectedItem().toString();
                         String completeAddress = address.getText().toString().trim();
 
+                        if (TextUtils.isEmpty(request_user_name)) {
+                            Toast.makeText(getActivity(), "Enter complete name!", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        if (TextUtils.isEmpty(mobile)) {
+                            Toast.makeText(getActivity(), "Enter mobile no.!", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        if (TextUtils.isEmpty(completeAddress)) {
+                            Toast.makeText(getActivity(), "Enter complete address!", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
                         ref.push().setValue((new BloodRequest(request_user_name,
                                 bloodGroup,
-                                new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss", Locale.ENGLISH).format(new Date()),
+                                new SimpleDateFormat("yyyy.MM.dd.HH.mm", Locale.ENGLISH).format(new Date()),
                                 completeAddress,
                                 mobile)));
                     }

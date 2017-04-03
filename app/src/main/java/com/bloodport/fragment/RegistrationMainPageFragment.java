@@ -47,6 +47,7 @@ public class RegistrationMainPageFragment extends Fragment
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
     private FirebaseAuth auth;
+    ProgressDialog progressDialog;
     static RegistrationMainPageFragment instance;
 
     public RegistrationMainPageFragment()
@@ -166,26 +167,11 @@ public class RegistrationMainPageFragment extends Fragment
                 .setPositiveButton("Enter", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
-                        ProgressDialog progressDialog = new ProgressDialog(getActivity());
+                        progressDialog = new ProgressDialog(getActivity());
                         progressDialog.setMessage("Registering New User");
                         progressDialog.show();
 
                         registerUserOnFirebase(emailAddress.getText().toString().trim(), password.getText().toString().trim());
-
-                        editor.putBoolean("skip_registration" , true).apply();
-                        editor.putString("phoneNumber" , phoneNumber.getText().toString().trim()).apply();
-
-                        Toast.makeText(getActivity(), "You have successfully registered" , Toast.LENGTH_SHORT).show();
-
-                        getActivity().getSupportFragmentManager().popBackStack();
-                        getActivity().getSupportFragmentManager()
-                                .beginTransaction()
-                                .add(R.id.mainFragmentFrame,
-                                        new LoginFragment(),
-                                        LoginFragment.class.getSimpleName())
-                                .commit();
-
-                        progressDialog.hide();
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -206,14 +192,27 @@ public class RegistrationMainPageFragment extends Fragment
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task)
                     {
-                        Toast.makeText(getActivity(), "createUserWithEmail:onComplete:" + task.isSuccessful(), Toast.LENGTH_SHORT).show();
-
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
                             Toast.makeText(getActivity(), "Authentication failed." + task.getException(),
                                     Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {
+                            progressDialog.hide();
+
+                            Toast.makeText(getActivity(), "You have successfully registered" , Toast.LENGTH_SHORT).show();
+
+                            //editor.putBoolean("skip_registration" , true).apply();
+                            editor.putString("phoneNumber" , phoneNumber.getText().toString().trim()).apply();
+
+                            getActivity().getSupportFragmentManager().popBackStack();
+                            getActivity().getSupportFragmentManager()
+                                    .beginTransaction()
+                                    .replace(R.id.mainFragmentFrame,
+                                            new LoginFragment(),
+                                            LoginFragment.class.getSimpleName())
+                                    .addToBackStack(LoginFragment.class.getSimpleName())
+                                    .commit();
                         }
                     }
                 });

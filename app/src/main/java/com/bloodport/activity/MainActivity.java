@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity
                     .add(R.id.mainFragmentFrame,
                             new LoginFragment(),
                             LoginFragment.class.getSimpleName())
-                    .addToBackStack(LoginFragment.class.getSimpleName())
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .commit();
         }
@@ -41,7 +40,6 @@ public class MainActivity extends AppCompatActivity
                     .add(R.id.mainFragmentFrame,
                             DashBoardFragment.newInstance(),
                             DashBoardFragment.class.getSimpleName())
-                    .addToBackStack(DashBoardFragment.class.getSimpleName())
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .commit();
         }
@@ -50,8 +48,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed()
     {
-        if (getFragmentManager().getBackStackEntryCount() > 1) {
-            getFragmentManager().popBackStack();
+        if (getFragmentManager().getBackStackEntryCount() > 2) {
+            getFragmentManager().popBackStackImmediate();
         } else {
             super.onBackPressed();
         }
