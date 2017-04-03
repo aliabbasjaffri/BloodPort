@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity
             getSupportFragmentManager()
                     .beginTransaction()
                     .add(R.id.mainFragmentFrame,
-                            DashBoardFragment.newInstance(),
+                            new DashBoardFragment(),
                             DashBoardFragment.class.getSimpleName())
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .commit();
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed()
     {
-        if (getFragmentManager().getBackStackEntryCount() > 2) {
+        if (getFragmentManager().getBackStackEntryCount() > 1) {
             getFragmentManager().popBackStackImmediate();
         } else {
             super.onBackPressed();

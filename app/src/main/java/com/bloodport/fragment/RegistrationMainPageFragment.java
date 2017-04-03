@@ -1,11 +1,13 @@
 package com.bloodport.fragment;
 
 import com.bloodport.R;
+import com.bloodport.model.UserRegistration;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -47,17 +49,14 @@ public class RegistrationMainPageFragment extends Fragment
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
     private FirebaseAuth auth;
+    DatabaseReference mDatabase;
     ProgressDialog progressDialog;
-    static RegistrationMainPageFragment instance;
+    UserRegistration newUser;
 
     public RegistrationMainPageFragment()
     {
         auth = FirebaseAuth.getInstance();
-    }
-
-    public static RegistrationMainPageFragment newInstance()
-    {
-        return instance == null ? instance = new RegistrationMainPageFragment() : instance;
+        mDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
     @Override
@@ -163,10 +162,15 @@ public class RegistrationMainPageFragment extends Fragment
         gender.setText(((RadioButton) view.findViewById(genderGroup.getCheckedRadioButtonId())).getText().toString());
         bloodGroups.setText(bloodGroupSpinner.getSelectedItem().toString());
 
-        alertDialogBuilder.setCancelable(false)
-                .setPositiveButton("Enter", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
+        newUser = new UserRegistration(name.getText().toString().trim(),
+                mobileNumber.getText().toString().trim(),
+                gender.getText().toString().trim(),
+                bloodGroups.getText().toString().trim(),
+                email.getText().toString().trim());
 
+        alertDialogBuilder.setCancelable(false)
+                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
                         progressDialog = new ProgressDialog(getActivity());
                         progressDialog.setMessage("Registering New User");
                         progressDialog.show();
@@ -198,11 +202,13 @@ public class RegistrationMainPageFragment extends Fragment
                         }
                         else
                         {
+                            mDatabase.child("users").child(task.getResult().getUser().getUid()).setValue(newUser);
+
                             progressDialog.hide();
 
                             Toast.makeText(getActivity(), "You have successfully registered" , Toast.LENGTH_SHORT).show();
 
-                            //editor.putBoolean("skip_registration" , true).apply();
+                            editor.putBoolean("skip_registration" , true).apply();
                             editor.putString("phoneNumber" , phoneNumber.getText().toString().trim()).apply();
 
                             getActivity().getSupportFragmentManager().popBackStack();

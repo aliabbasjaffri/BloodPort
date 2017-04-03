@@ -9,16 +9,15 @@ public class UserRegistration
     private String email;
     private String name;
     private String phoneNumber;
-    private Boolean gender;
-    private Boolean termsAgreement;
+    private String gender;
     private String bloodGroup;
 
-    public UserRegistration(String name, String phoneNumber, Boolean gender, Boolean termsAgreement, String bloodGroup) {
+    public UserRegistration(String name, String phoneNumber, String gender, String bloodGroup, String email) {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.gender = gender;
-        this.termsAgreement = termsAgreement;
         this.bloodGroup = bloodGroup;
+        this.email = email;
     }
 
     public String getName() {
@@ -29,12 +28,8 @@ public class UserRegistration
         return phoneNumber;
     }
 
-    public Boolean getGender() {
+    public String getGender() {
         return gender;
-    }
-
-    public Boolean getTermsAgreement() {
-        return termsAgreement;
     }
 
     public void setName(String name) {
@@ -45,14 +40,9 @@ public class UserRegistration
         this.phoneNumber = phoneNumber;
     }
 
-    public void setGender(Boolean gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
-
-    public void setTermsAgreement(Boolean termsAgreement) {
-        this.termsAgreement = termsAgreement;
-    }
-
 
     public String getBloodGroup() {
         return bloodGroup;
@@ -60,5 +50,13 @@ public class UserRegistration
 
     public void setBloodGroup(String bloodGroup) {
         this.bloodGroup = bloodGroup;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

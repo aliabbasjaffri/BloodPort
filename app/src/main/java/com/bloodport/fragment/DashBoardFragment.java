@@ -37,7 +37,6 @@ public class DashBoardFragment extends Fragment
 {
     private FirebaseDatabase mDatabase;
     List<BloodRequest> requests = new ArrayList<>();
-    private static DashBoardFragment instance;
     SharedPreferences prefs;
     DashboardAdapter adapter;
     DatabaseReference ref;
@@ -51,12 +50,6 @@ public class DashBoardFragment extends Fragment
     public DashBoardFragment()
     {
         mDatabase = FirebaseDatabase.getInstance();
-
-    }
-
-    public static DashBoardFragment newInstance()
-    {
-        return instance == null ? instance = new DashBoardFragment() : instance;
     }
 
     @Override

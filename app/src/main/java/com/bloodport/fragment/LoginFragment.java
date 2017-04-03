@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bloodport.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -59,7 +58,7 @@ public class LoginFragment extends Fragment
                 getActivity().getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.mainFragmentFrame,
-                                RegistrationMainPageFragment.newInstance(),
+                                new RegistrationMainPageFragment(),
                                 RegistrationMainPageFragment.class.getSimpleName())
                         .addToBackStack(RegistrationMainPageFragment.class.getSimpleName())
                         .setTransition(FragmentTransaction.TRANSIT_EXIT_MASK)
@@ -108,7 +107,7 @@ public class LoginFragment extends Fragment
                                     getActivity().getSupportFragmentManager()
                                             .beginTransaction()
                                             .replace(R.id.mainFragmentFrame,
-                                                    DashBoardFragment.newInstance(),
+                                                    new DashBoardFragment(),
                                                     DashBoardFragment.class.getSimpleName())
                                             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                                             .commit();
