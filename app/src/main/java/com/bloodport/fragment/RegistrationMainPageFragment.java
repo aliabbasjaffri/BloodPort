@@ -208,7 +208,6 @@ public class RegistrationMainPageFragment extends Fragment
 
                             Toast.makeText(getActivity(), "You have successfully registered" , Toast.LENGTH_SHORT).show();
 
-                            editor.putBoolean("skip_registration" , true).apply();
                             editor.putString("phoneNumber" , phoneNumber.getText().toString().trim()).apply();
 
                             getActivity().getSupportFragmentManager().popBackStack();

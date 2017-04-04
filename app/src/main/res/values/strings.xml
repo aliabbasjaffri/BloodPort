@@ -62,4 +62,6 @@
     <string name="login_fragment_minimum_password_error">Password must be greater than 6 characters</string>
     <string name="login_fragment_auth_failed_error">User does not exist</string>
 
+    <string name="text_message">Hello, I am willing to donate the requested blood. Please follow up with me at this number: </string>
+
 </resources>

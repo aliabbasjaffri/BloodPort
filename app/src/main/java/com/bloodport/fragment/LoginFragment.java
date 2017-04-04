@@ -1,7 +1,9 @@
 package com.bloodport.fragment;
 
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -31,11 +33,14 @@ public class LoginFragment extends Fragment
     Button login;
     TextView forgetPassword;
     FirebaseAuth auth;
+    SharedPreferences prefs;
+    SharedPreferences.Editor editor;
     ProgressDialog progressDialog;
 
     public LoginFragment()
     {
         auth = FirebaseAuth.getInstance();
+
     }
 
     @Override
@@ -50,6 +55,8 @@ public class LoginFragment extends Fragment
         forgetPassword = (TextView) view.findViewById(R.id.loginFragmentForgetPassword);
 
         progressDialog = new ProgressDialog(getActivity());
+        prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        editor = prefs.edit();
 
         registration.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,7 +109,7 @@ public class LoginFragment extends Fragment
                                 else
                                 {
                                     progressDialog.hide();
-
+                                    editor.putBoolean("skip_registration" , true).apply();
                                     getActivity().getSupportFragmentManager().popBackStack();
                                     getActivity().getSupportFragmentManager()
                                             .beginTransaction()

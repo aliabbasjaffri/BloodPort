@@ -1,7 +1,9 @@
 package com.bloodport.fragment;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -85,16 +87,23 @@ public class DashBoardFragment extends Fragment
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
         ListView listView = (ListView) view.findViewById(R.id.dashboardFragmentListView);
 
+        prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
         queryRef = mDatabase.getReference().child("requests").orderByChild("timeStamp");
         queryRef.addChildEventListener(childEventListener);
 
         adapter = new DashboardAdapter(getActivity(), requests);
         listView.setAdapter(adapter);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                BloodRequest obj = requests.get(position);
 
+                startActivity( new Intent(Intent.ACTION_VIEW, Uri.parse("sms:" + obj.getPhoneNumber()))
+                        .putExtra( "sms_body", getString(R.string.text_message) + prefs.getString("phoneNumber","")));
             }
         });
 
@@ -135,8 +144,6 @@ public class DashBoardFragment extends Fragment
         View promptView = layoutInflater.inflate(R.layout.popup_new_request, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
         alertDialogBuilder.setView(promptView);
-
-        prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         ref = mDatabase.getReference("requests/");
 
