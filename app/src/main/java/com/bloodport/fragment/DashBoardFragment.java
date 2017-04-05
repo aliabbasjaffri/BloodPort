@@ -18,9 +18,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import com.bloodport.R;
 import com.bloodport.adapter.DashboardAdapter;
 import com.bloodport.model.BloodRequest;
@@ -47,6 +48,8 @@ public class DashBoardFragment extends Fragment
     EditText mobileNumber;
     Spinner bloodGroupSpinner;
     EditText address;
+    RadioGroup contactGroup;
+    RadioButton contactButton;
 
 
     public DashBoardFragment()
@@ -100,14 +103,9 @@ public class DashBoardFragment extends Fragment
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                BloodRequest obj = requests.get(position);
-
-                startActivity( new Intent(Intent.ACTION_VIEW, Uri.parse("sms:" + obj.getPhoneNumber()))
-                        .putExtra( "sms_body", getString(R.string.text_message) + prefs.getString("phoneNumber","")));
+                contactPerson(requests.get(position));
             }
         });
-
-
 
         return view;
     }
@@ -184,6 +182,41 @@ public class DashBoardFragment extends Fragment
                                 new SimpleDateFormat("yyyy.MM.dd.HH.mm", Locale.ENGLISH).format(new Date()),
                                 completeAddress,
                                 mobile)));
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
+    }
+
+    private void contactPerson(final BloodRequest obj)
+    {
+        LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+        final View promptView = layoutInflater.inflate(R.layout.popup_phonecall_sms, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+        alertDialogBuilder.setView(promptView);
+
+        contactGroup = (RadioGroup) promptView.findViewById(R.id.popupContactSelectRadioGroup);
+
+        alertDialogBuilder.setCancelable(false)
+                .setPositiveButton("Make Request", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id)
+                    {
+                        contactButton = (RadioButton) promptView.findViewById(contactGroup.getCheckedRadioButtonId());
+                        if(contactButton.getText().toString().contains("SMS"))
+                        {
+                            startActivity( new Intent(Intent.ACTION_VIEW, Uri.parse("sms:" + obj.getPhoneNumber()))
+                                    .putExtra( "sms_body", getString(R.string.text_message) + prefs.getString("phoneNumber","")));
+                        }
+                        else
+                        {
+                            startActivityForResult(new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + obj.getPhoneNumber())), 1);
+                        }
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
