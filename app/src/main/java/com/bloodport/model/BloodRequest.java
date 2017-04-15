@@ -11,18 +11,20 @@ public class BloodRequest
     private String timeStamp;
     private String location;
     private String phoneNumber;
+    private String city;
 
     public BloodRequest()
     {
 
     }
 
-    public BloodRequest(String name, String bloodGroup, String timeStamp, String location, String phoneNumber) {
+    public BloodRequest(String name, String bloodGroup, String timeStamp, String location, String phoneNumber, String city) {
         this.name = name;
         this.bloodGroup = bloodGroup;
         this.timeStamp = timeStamp;
         this.location = location;
         this.phoneNumber = phoneNumber;
+        this.city = city;
     }
 
     public String getName() {
@@ -63,5 +65,13 @@ public class BloodRequest
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 }

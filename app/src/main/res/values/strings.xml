@@ -13,6 +13,16 @@
         <item>O-</item>
     </string-array>
 
+    <string-array name="cities">
+        <item>Lahore</item>
+        <item>Karachi</item>
+        <item>Islamabad</item>
+        <item>Quetta</item>
+        <item>Peshawar</item>
+        <item>Faisalabad</item>
+        <item>Multan</item>
+    </string-array>
+
     <!--Registration Fragment Layout Strings -->
     <string name="registration_fragment_email_address_hint">Email Address</string>
     <string name="registration_fragment_password_hint">Password</string>
@@ -25,7 +35,6 @@
     <string name="registration_fragment_female">Female</string>
     <string name="registration_fragment_bloodgroup">BloodGroup</string>
     <string name="registration_fragment_spinner_prompt">Please select your Blood Group</string>
-    <string name="registration_fragment_mustusethese">http://www.androidhive.info/2015/09/android-material-design-floating-labels-for-edittext/</string>
 
     <!--Confirmation Popup Layout Strings -->
     <string name="confirm_popup_header">Please confirm your details</string>

@@ -47,6 +47,7 @@ public class DashBoardFragment extends Fragment
     EditText name;
     EditText mobileNumber;
     Spinner bloodGroupSpinner;
+    Spinner citiesSpinner;
     EditText address;
     RadioGroup contactGroup;
     RadioButton contactButton;
@@ -151,6 +152,7 @@ public class DashBoardFragment extends Fragment
         mobileNumber.setText(prefs.getString("phoneNumber", ""));
 
         bloodGroupSpinner = (Spinner) promptView.findViewById(R.id.popupRequestBloodGroupSpinner);
+        citiesSpinner = (Spinner) promptView.findViewById(R.id.popupRequestCitySpinner);
         address = (EditText) promptView.findViewById(R.id.popupRequestAddressEditText);
 
         alertDialogBuilder.setCancelable(false)
@@ -160,6 +162,7 @@ public class DashBoardFragment extends Fragment
                         String request_user_name = name.getText().toString().trim();
                         String mobile = mobileNumber.getText().toString().trim();
                         String bloodGroup = bloodGroupSpinner.getSelectedItem().toString();
+                        String city = citiesSpinner.getSelectedItem().toString();
                         String completeAddress = address.getText().toString().trim();
 
                         if (TextUtils.isEmpty(request_user_name)) {
@@ -181,7 +184,8 @@ public class DashBoardFragment extends Fragment
                                 bloodGroup,
                                 new SimpleDateFormat("yyyy.MM.dd.HH.mm", Locale.ENGLISH).format(new Date()),
                                 completeAddress,
-                                mobile)));
+                                mobile,
+                                city)));
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
