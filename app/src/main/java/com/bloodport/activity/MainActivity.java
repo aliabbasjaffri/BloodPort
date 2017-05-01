@@ -8,6 +8,7 @@ import android.os.Bundle;
 import com.bloodport.R;
 import com.bloodport.fragment.DashBoardFragment;
 import com.bloodport.fragment.LoginFragment;
+import com.bloodport.fragment.MainFragmentPager;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -34,8 +35,8 @@ public class MainActivity extends AppCompatActivity
                 getSupportFragmentManager()
                         .beginTransaction()
                         .add(R.id.mainFragmentFrame,
-                                new DashBoardFragment(),
-                                DashBoardFragment.class.getSimpleName())
+                                new MainFragmentPager(),
+                                MainFragmentPager.class.getSimpleName())
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .commit();
             }
@@ -45,10 +46,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed()
     {
-        if (getFragmentManager().getBackStackEntryCount() > 1) {
+        if (getFragmentManager().getBackStackEntryCount() > 1)
             getFragmentManager().popBackStackImmediate();
-        } else {
-            super.onBackPressed();
-        }
+        else super.onBackPressed();
     }
 }

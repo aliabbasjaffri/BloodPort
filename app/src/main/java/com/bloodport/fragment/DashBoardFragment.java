@@ -52,6 +52,18 @@ public class DashBoardFragment extends Fragment
     RadioGroup contactGroup;
     RadioButton contactButton;
 
+    private String title;
+    private int page;
+
+    // newInstance constructor for creating fragment with arguments
+    public static DashBoardFragment newInstance(int page, String title) {
+        DashBoardFragment fragmentFirst = new DashBoardFragment();
+        Bundle args = new Bundle();
+        args.putInt("someInt", page);
+        args.putString("someTitle", title);
+        fragmentFirst.setArguments(args);
+        return fragmentFirst;
+    }
 
     public DashBoardFragment()
     {
@@ -62,6 +74,8 @@ public class DashBoardFragment extends Fragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        page = getArguments().getInt("someInt", 0);
+        title = getArguments().getString("someTitle");
     }
 
     @Override
@@ -207,6 +221,7 @@ public class DashBoardFragment extends Fragment
 
         contactGroup = (RadioGroup) promptView.findViewById(R.id.popupContactSelectRadioGroup);
 
+        //TODO: Must add dynamic permissions. Remove explicit permissions from manifest file.
         alertDialogBuilder.setCancelable(false)
                 .setPositiveButton("Make Request", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id)
