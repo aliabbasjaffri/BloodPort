@@ -52,15 +52,13 @@ public class DashBoardFragment extends Fragment
     RadioGroup contactGroup;
     RadioButton contactButton;
 
-    private String title;
-    private int page;
+    private boolean isFromRequestFragment;
 
     // newInstance constructor for creating fragment with arguments
-    public static DashBoardFragment newInstance(int page, String title) {
+    public static DashBoardFragment newInstance(boolean isFromRequestFragment) {
         DashBoardFragment fragmentFirst = new DashBoardFragment();
         Bundle args = new Bundle();
-        args.putInt("someInt", page);
-        args.putString("someTitle", title);
+        args.putBoolean("isFromRequestFragment",isFromRequestFragment);
         fragmentFirst.setArguments(args);
         return fragmentFirst;
     }
@@ -74,8 +72,7 @@ public class DashBoardFragment extends Fragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        page = getArguments().getInt("someInt", 0);
-        title = getArguments().getString("someTitle");
+        isFromRequestFragment = getArguments().getBoolean("isFromRequestFragment");
     }
 
     @Override
@@ -110,7 +107,7 @@ public class DashBoardFragment extends Fragment
         queryRef = mDatabase.getReference().child("requests").orderByChild("timeStamp");
         queryRef.addChildEventListener(childEventListener);
 
-        adapter = new DashboardAdapter(getActivity(), requests);
+        adapter = new DashboardAdapter(getActivity(), requests, isFromRequestFragment);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener()

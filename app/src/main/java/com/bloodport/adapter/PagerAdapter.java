@@ -19,10 +19,10 @@ public class PagerAdapter extends FragmentPagerAdapter
     @Override
     public Fragment getItem(int position) {
         switch (position) {
-            case 0: // Fragment # 0 - This will show FirstFragment
-                return DashBoardFragment.newInstance(0, "Page # 1");
-            case 1: // Fragment # 1 - This will show FirstFragment different title
-                return DashBoardFragment.newInstance(0, "Page # 2");
+            case 0:
+                return DashBoardFragment.newInstance(true);
+            case 1:
+                return DashBoardFragment.newInstance(false);
             default:
                 return null;
         }

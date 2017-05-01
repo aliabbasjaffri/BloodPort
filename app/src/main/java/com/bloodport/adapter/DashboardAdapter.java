@@ -1,6 +1,7 @@
 package com.bloodport.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,11 +21,14 @@ public class DashboardAdapter extends BaseAdapter
 {
     private Context context;
     private List<BloodRequest> listObjects;
+    private boolean isFromRequestFragment;
+    int[] color_arr={Color.BLUE,Color.CYAN,Color.DKGRAY,Color.GREEN, Color.RED};
 
-    public DashboardAdapter(Context context, List<BloodRequest> obj)
+    public DashboardAdapter(Context context, List<BloodRequest> obj, boolean isFromRequestFragment)
     {
         this.context = context;
         this.listObjects = obj;
+        this.isFromRequestFragment = isFromRequestFragment;
     }
 
     @Override
@@ -62,6 +66,9 @@ public class DashboardAdapter extends BaseAdapter
         bloodGroupHolder.setText(listObjects.get(position).getBloodGroup());
         timePosterHolder.setText(listObjects.get(position).getTimeStamp());
         locationHolder.setText(listObjects.get(position).getLocation());
+
+        //if(isFromRequestFragment)
+        //    view.setBackgroundColor(color_arr[position % 5]);
 
         return view;
     }
