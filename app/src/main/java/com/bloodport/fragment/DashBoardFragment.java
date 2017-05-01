@@ -56,11 +56,11 @@ public class DashBoardFragment extends Fragment
 
     // newInstance constructor for creating fragment with arguments
     public static DashBoardFragment newInstance(boolean isFromRequestFragment) {
-        DashBoardFragment fragmentFirst = new DashBoardFragment();
+        DashBoardFragment dashBoardFragment = new DashBoardFragment();
         Bundle args = new Bundle();
         args.putBoolean("isFromRequestFragment",isFromRequestFragment);
-        fragmentFirst.setArguments(args);
-        return fragmentFirst;
+        dashBoardFragment.setArguments(args);
+        return dashBoardFragment;
     }
 
     public DashBoardFragment()
@@ -104,7 +104,11 @@ public class DashBoardFragment extends Fragment
 
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        queryRef = mDatabase.getReference().child("requests").orderByChild("timeStamp");
+        if(isFromRequestFragment)
+            queryRef = mDatabase.getReference().child("requests").orderByChild("timeStamp");
+        else
+            queryRef = mDatabase.getReference().child("donors").orderByChild("timeStamp");
+
         queryRef.addChildEventListener(childEventListener);
 
         adapter = new DashboardAdapter(getActivity(), requests, isFromRequestFragment);
@@ -155,7 +159,10 @@ public class DashBoardFragment extends Fragment
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
         alertDialogBuilder.setView(promptView);
 
-        ref = mDatabase.getReference("requests/");
+        if(isFromRequestFragment)
+            ref = mDatabase.getReference("requests/");
+        else
+            ref = mDatabase.getReference("donors/");
 
         name = (EditText) promptView.findViewById(R.id.popupRequestNameEditText);
 
