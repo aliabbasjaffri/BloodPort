@@ -21,6 +21,7 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.bloodport.R;
 import com.bloodport.adapter.DashboardAdapter;
@@ -28,7 +29,7 @@ import com.bloodport.model.BloodRequest;
 import com.google.firebase.database.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -39,22 +40,20 @@ import java.util.Locale;
 public class DashBoardFragment extends Fragment
 {
     private FirebaseDatabase mDatabase;
-    List<BloodRequest> requests = new ArrayList<>();
-    SharedPreferences prefs;
-    DashboardAdapter adapter;
-    DatabaseReference ref;
-    Query queryRef;
-    EditText name;
-    EditText mobileNumber;
-    Spinner bloodGroupSpinner;
-    Spinner citiesSpinner;
-    EditText address;
-    RadioGroup contactGroup;
-    RadioButton contactButton;
-
+    private List<BloodRequest> requests = new ArrayList<>();
+    private SharedPreferences prefs;
+    private DashboardAdapter adapter;
+    private DatabaseReference ref;
+    private Query queryRef;
+    private EditText name;
+    private EditText mobileNumber;
+    private Spinner bloodGroupSpinner;
+    private Spinner citiesSpinner;
+    private EditText address;
+    private RadioGroup contactGroup;
+    private RadioButton contactButton;
     private boolean isFromRequestFragment;
 
-    // newInstance constructor for creating fragment with arguments
     public static DashBoardFragment newInstance(boolean isFromRequestFragment) {
         DashBoardFragment dashBoardFragment = new DashBoardFragment();
         Bundle args = new Bundle();
@@ -77,7 +76,6 @@ public class DashBoardFragment extends Fragment
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // TODO Add your menu entries here
         super.onCreateOptionsMenu(menu, inflater);
         getActivity().getMenuInflater().inflate(R.menu.main_menu, menu);
     }
@@ -109,6 +107,7 @@ public class DashBoardFragment extends Fragment
         else
             queryRef = mDatabase.getReference().child("donors").orderByChild("timeStamp");
 
+        queryRef.keepSynced(true);
         queryRef.addChildEventListener(childEventListener);
 
         adapter = new DashboardAdapter(getActivity(), requests, isFromRequestFragment);
@@ -130,7 +129,7 @@ public class DashBoardFragment extends Fragment
         @Override
         public void onChildAdded (DataSnapshot dataSnapshot, String previousChild)
         {
-            requests.add(dataSnapshot.getValue(BloodRequest.class));
+            requests.add(0 , dataSnapshot.getValue(BloodRequest.class));
             adapter.notifyDataSetChanged();
         }
 
@@ -159,10 +158,16 @@ public class DashBoardFragment extends Fragment
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
         alertDialogBuilder.setView(promptView);
 
-        if(isFromRequestFragment)
-            ref = mDatabase.getReference("requests/");
-        else
-            ref = mDatabase.getReference("donors/");
+        TextView title = (TextView) promptView.findViewById(R.id.newRequestTitleTextView);
+
+        if(isFromRequestFragment) {
+            ref = mDatabase.getReference("requests/").orderByChild("timeStamp").getRef();
+            title.setText(getActivity().getString(R.string.popup_request_title, "Blood"));
+        }
+        else {
+            ref = mDatabase.getReference("donors/").orderByChild("timeStamp").getRef();
+            title.setText(getActivity().getString(R.string.popup_request_title, "Donor" ));
+        }
 
         name = (EditText) promptView.findViewById(R.id.popupRequestNameEditText);
 
@@ -189,7 +194,7 @@ public class DashBoardFragment extends Fragment
                         }
 
                         if (TextUtils.isEmpty(mobile)) {
-                            Toast.makeText(getActivity(), "Enter mobile no.!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Enter mobile no.", Toast.LENGTH_SHORT).show();
                             return;
                         }
 
@@ -197,13 +202,13 @@ public class DashBoardFragment extends Fragment
                             Toast.makeText(getActivity(), "Enter complete address!", Toast.LENGTH_SHORT).show();
                             return;
                         }
-
-                        ref.push().setValue((new BloodRequest(request_user_name,
+                        ref.push().setValue(new BloodRequest(request_user_name,
                                 bloodGroup,
-                                new SimpleDateFormat("yyyy.MM.dd.HH.mm", Locale.ENGLISH).format(new Date()),
+                                new SimpleDateFormat("HH:mm", Locale.US).format(Calendar.getInstance().getTime()),
+                                new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(Calendar.getInstance().getTime()),
                                 completeAddress,
                                 mobile,
-                                city)));
+                                city));
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

@@ -64,7 +64,7 @@ public class DashboardAdapter extends BaseAdapter
 
         nameHolder.setText(listObjects.get(position).getName());
         bloodGroupHolder.setText(listObjects.get(position).getBloodGroup());
-        timePosterHolder.setText(listObjects.get(position).getTimeStamp());
+        timePosterHolder.setText(listObjects.get(position).getDate() + " " + listObjects.get(position).getTime());
         locationHolder.setText(listObjects.get(position).getLocation());
 
         //if(isFromRequestFragment)
