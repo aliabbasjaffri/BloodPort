@@ -84,10 +84,6 @@ public class RegistrationMainPageFragment extends Fragment
                 {
                     reviewDetails();
                 }
-                else
-                {
-                    editor.putBoolean("skip_registration" , false).apply();
-                }
             }
         });
         return view;

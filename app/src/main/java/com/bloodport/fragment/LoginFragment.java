@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -33,14 +34,11 @@ public class LoginFragment extends Fragment
     Button login;
     TextView forgetPassword;
     FirebaseAuth auth;
-    SharedPreferences prefs;
-    SharedPreferences.Editor editor;
     ProgressDialog progressDialog;
 
     public LoginFragment()
     {
         auth = FirebaseAuth.getInstance();
-
     }
 
     @Override
@@ -55,8 +53,6 @@ public class LoginFragment extends Fragment
         forgetPassword = (TextView) view.findViewById(R.id.loginFragmentForgetPassword);
 
         progressDialog = new ProgressDialog(getActivity());
-        prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        editor = prefs.edit();
 
         registration.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,7 +64,7 @@ public class LoginFragment extends Fragment
                                 new RegistrationMainPageFragment(),
                                 RegistrationMainPageFragment.class.getSimpleName())
                         .addToBackStack(RegistrationMainPageFragment.class.getSimpleName())
-                        .setTransition(FragmentTransaction.TRANSIT_EXIT_MASK)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .commit();
             }
         });
@@ -77,7 +73,7 @@ public class LoginFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                progressDialog.setMessage("Loggin In..");
+                progressDialog.setMessage("Logging In..");
                 progressDialog.show();
 
                 String email = emailAddress.getText().toString();
@@ -109,13 +105,12 @@ public class LoginFragment extends Fragment
                                 else
                                 {
                                     progressDialog.hide();
-                                    editor.putBoolean("skip_registration" , true).apply();
                                     getActivity().getSupportFragmentManager().popBackStack();
                                     getActivity().getSupportFragmentManager()
                                             .beginTransaction()
                                             .replace(R.id.mainFragmentFrame,
-                                                    new DashBoardFragment(),
-                                                    DashBoardFragment.class.getSimpleName())
+                                                    new MainFragmentPager(),
+                                                    MainFragmentPager.class.getSimpleName())
                                             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                                             .commit();
                                 }
@@ -127,10 +122,16 @@ public class LoginFragment extends Fragment
         forgetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Why the fuck did you forget it!", Toast.LENGTH_LONG).show();
+                getActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.mainFragmentFrame,
+                                new ForgetPasswordFragment(),
+                                ForgetPasswordFragment.class.getSimpleName())
+                        .addToBackStack(ForgetPasswordFragment.class.getSimpleName())
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .commit();
             }
         });
-
         return view;
     }
 }

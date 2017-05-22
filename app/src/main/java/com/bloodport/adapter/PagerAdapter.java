@@ -12,6 +12,8 @@ import com.bloodport.fragment.DashBoardFragment;
 
 public class PagerAdapter extends FragmentPagerAdapter
 {
+    private String [] titles = {"Blood Request" , "Blood Donors"};
+
     public PagerAdapter(FragmentManager fragmentManager) {
         super(fragmentManager);
     }
@@ -28,15 +30,9 @@ public class PagerAdapter extends FragmentPagerAdapter
         }
     }
 
-    // Returns the page title for the top indicator
     @Override
     public CharSequence getPageTitle(int position) {
-        switch (position)
-        {
-            case 0: return "Blood Request";
-            case 1: return "Blood Donors";
-            default: return null;
-        }
+        return titles[position];
     }
 
     @Override

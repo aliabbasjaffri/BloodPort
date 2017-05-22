@@ -71,6 +71,9 @@
     <string name="login_fragment_minimum_password_error">Password must be greater than 6 characters</string>
     <string name="login_fragment_auth_failed_error">User does not exist</string>
 
+    <string name="forget_password_button">Recover Password</string>
+    <string name="forget_password_editText_hint">Please enter your Email Address</string>
+
     <!--Popup New Request Layout Strings -->
     <string name="popup_phonecall_sms_phonecall">Call this person</string>
     <string name="popup_phonecall_sms_sms">Send an SMS</string>

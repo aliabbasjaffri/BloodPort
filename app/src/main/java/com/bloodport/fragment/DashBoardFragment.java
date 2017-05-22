@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 import com.bloodport.R;
 import com.bloodport.adapter.DashboardAdapter;
 import com.bloodport.model.BloodRequest;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -40,6 +42,7 @@ import java.util.Locale;
 public class DashBoardFragment extends Fragment
 {
     private FirebaseDatabase mDatabase;
+    private FirebaseAuth auth;
     private List<BloodRequest> requests = new ArrayList<>();
     private SharedPreferences prefs;
     private DashboardAdapter adapter;
@@ -53,6 +56,7 @@ public class DashBoardFragment extends Fragment
     private RadioGroup contactGroup;
     private RadioButton contactButton;
     private boolean isFromRequestFragment;
+    private Menu menu;
 
     public static DashBoardFragment newInstance(boolean isFromRequestFragment) {
         DashBoardFragment dashBoardFragment = new DashBoardFragment();
@@ -65,6 +69,7 @@ public class DashBoardFragment extends Fragment
     public DashBoardFragment()
     {
         mDatabase = FirebaseDatabase.getInstance();
+        auth = FirebaseAuth.getInstance();
     }
 
     @Override
@@ -77,7 +82,9 @@ public class DashBoardFragment extends Fragment
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+        this.menu = menu;
         getActivity().getMenuInflater().inflate(R.menu.main_menu, menu);
+        showMenu(true);
     }
 
     @Override
@@ -88,6 +95,9 @@ public class DashBoardFragment extends Fragment
             case R.id.menuItemAdd:
                 addNewRequest();
                 return true;
+            case R.id.menuLogOut:
+                signOut();
+                break;
             default:
                 break;
         }
@@ -257,9 +267,34 @@ public class DashBoardFragment extends Fragment
         alert.show();
     }
 
+    public void signOut() {
+        auth.signOut();
+
+        if (getActivity().getSupportFragmentManager().getBackStackEntryCount() > 1)
+            while(getActivity().getSupportFragmentManager().getBackStackEntryCount() != 1)
+                getActivity().getSupportFragmentManager().popBackStack();
+
+        showMenu(false);
+
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.mainFragmentFrame,
+                        new LoginFragment(),
+                        LoginFragment.class.getSimpleName())
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit();
+    }
+
     @Override
     public void onStop() {
         super.onStop();
         queryRef.removeEventListener(childEventListener);
+    }
+
+    public void showMenu(boolean showMenu)
+    {
+        if(menu == null)
+            return;
+        menu.setGroupVisible(R.id.mainMenuGroup, showMenu);
     }
 }
